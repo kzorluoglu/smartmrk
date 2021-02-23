@@ -14,6 +14,13 @@ _The App is larger than GitHub's recommended maximum file size of 50.00 MB, for 
 * [AppImage Linux (Ubuntu/Debian, Direct Runnable)](https://drive.google.com/drive/folders/19rq9utx8QaINXJXozG6b1suUQbxumm2X?usp=sharing)
 * [Snap Linux (Ubuntu/Debian, Direct Runnable)](https://drive.google.com/drive/folders/19rq9utx8QaINXJXozG6b1suUQbxumm2X?usp=sharing)
 
+# Next Features
+* Clock Widget
+* Calendar Widget
+* Widget with **wysiwyg** Editor
+* Monitor on/off with PIR Sensor Support
+* Downloadable Widgets
+* Widget Marketplace
 
 ## Project setup
 ```
