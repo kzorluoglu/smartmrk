@@ -1,29 +1,31 @@
 <template>
   <div class="grid" v-if="widgets.length > 0">
-    <widget v-for="widget in widgets" :key="widget.id" v-bind:widget="widget" v-bind:style="widget.genereatedStyle" />
-  </div>
-  <div class="no-widget-found" v-else>
-    <edit-widget v-bind:newWidget="true"></edit-widget>
+    <widget v-for="widget in widgets"
+            :key="widget.id"
+            v-bind:widget="widget"
+            v-bind:style="widget.genereatedStyle"
+            v-bind:class="{gridShowable : isAdmin}"/>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import database from '@/services/database'
 import Widget from "@/components/Widget";
-import EditWidget from "@/components/EditWidget";
-
 export default {
   name: 'Homepage',
-  components: {EditWidget, Widget},
+  components: { Widget },
   data() {
     return {
-      widgets: []
+      widgets: [],
+      isAdmin: Vue.prototype.$isAdmin
     }
+  },
+  mounted() {
+    console.log("test")
   },
   beforeMount() {
     this.widgets = database.get('widgets').value()
-  },
-  methods: {
   }
 }
 </script>
@@ -37,7 +39,64 @@ export default {
   grid-column-gap: 1rem;
   height: 100vh;
 }
-.no-widget-found {
+.girdItemVisible {
+  border:1px #f1c40f solid;
+}
 
+.new-widget-button {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+}
+
+.btn {
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  border: 2px solid #e74c3c;
+  border-radius: 0.6em;
+  color: #e74c3c;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  margin: 20px;
+  padding: 1.2em 2.8em;
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+.btn:hover, .btn:focus {
+  color: #fff;
+  outline: 0;
+}
+
+.fourth {
+  border-color: #f1c40f;
+  color: #fff;
+  background-image: -webkit-linear-gradient(45deg, #f1c40f 50%, transparent 50%);
+  background-image: linear-gradient(45deg, #f1c40f 50%, transparent 50%);
+  background-position: 100%;
+  background-size: 400%;
+  -webkit-transition: background 300ms ease-in-out;
+  transition: background 300ms ease-in-out;
+}
+.fourth:hover {
+  background-position: 0;
 }
 </style>

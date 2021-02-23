@@ -1,15 +1,4 @@
 {
-  "widgets": [
-    {
-      "rowStart": 0,
-      "rowEnd": 0,
-      "columnStart": "1",
-      "columnEnd": 0,
-      "body": "test",
-      "isEditing": false,
-      "genereatedStyle": "\n              grid-row-start:0;\n              grid-row-end:0;\n              grid-column-start:1;\n              grid-column-end:0;",
-      "id": "fba5b545-a86c-43dd-b008-2d58d84349dc"
-    }
-  ],
+  "widgets": [],
   "settings": {}
 }

@@ -1,13 +1,13 @@
 <template>
   <div class="editWidget card float-right">
     <div class="card-header">
-      <button class="btn btn-warning" v-on:click="closeEditWidget"> x</button>
+      <button class="btn btn-warning" v-on:click="close">x</button>
     </div>
     <div class="card-body">
       <div class="row">
         <div class="col">
-          <div class="alert alert-secondary" role="alert" v-if="newWidget">
-            Create your first Widget!
+          <div class="alert alert-light" role="alert">
+            Create Widget
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
           <div>
             <label for="rowStart" class="form-label">Start Position: {{ rowStart }}</label>
             <input type="range" class="form-range" id="rowStart" min="1" max="12" step="1" v-model="rowStart">
-           </div>
+          </div>
           <div>
             <label for="rowEnd" class="form-label">End Position: {{ rowEnd }}</label>
             <input type="range" class="form-range" id="rowEnd" min="1" max="12" step="1" v-model="rowEnd">
@@ -35,15 +35,21 @@
         </div>
         <div class="row">
           <div class="col">
-            <textarea ref="rawBody" class="form-control" v-model="rawBody" placeholder="Write your Text or HTML Code"></textarea><br>
+            <textarea ref="rawBody" class="form-control" v-model="rawBody"
+                      placeholder="Write your Text or HTML Code"></textarea><br>
           </div>
         </div>
         <div class="row">
           <div class="col">
+            <div class="btn-group float-end" role="group">
             <button class="btn btn-primary" v-on:click="updateWidget">
               <span>Save</span>
             </button>
-          </div>
+              <button class="btn btn-warning" v-on:click="deleteWidget">
+                <span>Delete</span>
+              </button>
+            </div>
+            </div>
         </div>
 
 
@@ -60,18 +66,11 @@ import database from '@/services/database'
 
 export default {
   name: "EditWidget",
-  props: {
-    id: null,
-    newWidget: {
-      type: Boolean,
-      default: false
-    }
-  },
   data() {
     return {
       max: 12,
       min: 1,
-      widget: 0,
+      widget: null,
       rowStart: 0,
       rowEnd: 0,
       columnStart: 0,
@@ -80,53 +79,41 @@ export default {
     }
   },
   beforeMount() {
-    if (this.newWidget == false) {
-      this.widget = database.get('widgets').getById(this.id).value();
-      this.rawBody = this.widget.body;
-      this.rowStart = parseInt(this.widget.rowStart);
-      this.rowEnd = parseInt(this.widget.rowEnd);
-      this.columnStart = parseInt(this.widget.columnStart);
-      this.columnEnd = parseInt(this.widget.columnEnd);
-    }
+    this.widget = database.get('widgets').getById(this.$router.currentRoute.params.id).value();
+    this.rawBody = this.widget.body;
+    this.rowStart = parseInt(this.widget.rowStart);
+    this.rowEnd = parseInt(this.widget.rowEnd);
+    this.columnStart = parseInt(this.widget.columnStart);
+    this.columnEnd = parseInt(this.widget.columnEnd);
   },
   methods: {
     updateWidget() {
 
-      if (this.newWidget == false) {
-        database.get('widgets').getById(this.widget.id).assign({
-          "rowStart": this.rowStart,
-          "rowEnd": this.rowEnd,
-          "columnStart": this.columnStart,
-          "columnEnd": this.columnEnd,
-          "body": this.rawBody,
-          "isEditing": false,
-          "genereatedStyle": `
+      if (this.rawBody === '') {
+        return;
+      }
+
+      database.get('widgets').getById(this.widget.id).assign({
+        "rowStart": this.rowStart,
+        "rowEnd": this.rowEnd,
+        "columnStart": this.columnStart,
+        "columnEnd": this.columnEnd,
+        "body": this.rawBody,
+        "isEditing": false,
+        "genereatedStyle": `
               grid-row-start:${this.rowStart};
               grid-row-end:${this.rowEnd};
               grid-column-start:${this.columnStart};
               grid-column-end:${this.columnEnd};`
-        }).write()
-      }
-
-      if (this.newWidget == true) {
-        database.get('widgets').insert({
-          "rowStart": this.rowStart,
-          "rowEnd": this.rowEnd,
-          "columnStart": this.columnStart,
-          "columnEnd": this.columnEnd,
-          "body": this.rawBody,
-          "isEditing": false,
-          "genereatedStyle": `
-              grid-row-start:${this.rowStart};
-              grid-row-end:${this.rowEnd};
-              grid-column-start:${this.columnStart};
-              grid-column-end:${this.columnEnd};`
-        }).write()
-
-      }
+      }).write()
+      this.$router.push({path: '/'})
     },
-    closeEditWidget() {
-      this.widget.isEditing = false;
+    deleteWidget(){
+      database.get('widgets').remove({id: this.widget.id}).write()
+      this.$router.push({path: '/'})
+    },
+    close() {
+      this.$router.push({path: '/'})
     }
   }
 }
