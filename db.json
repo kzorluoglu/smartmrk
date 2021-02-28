@@ -1,4 +1,16 @@
 {
-  "widgets": [],
+  "widgets": [
+    {
+      "rowStart": 6,
+      "rowEnd": 6,
+      "columnStart": "6",
+      "columnEnd": 6,
+      "body": "",
+      "component": "modules/smartMRK/timers/clean",
+      "isEditing": false,
+      "genereatedStyle": "\n              grid-row-start:6;\n              grid-row-end:6;\n              grid-column-start:6;\n              grid-column-end:6;",
+      "id": "e73436a7-15a7-4834-acd4-686454defeb5"
+    }
+  ],
   "settings": {}
 }

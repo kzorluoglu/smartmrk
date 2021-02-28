@@ -82,7 +82,7 @@ export default {
       component: "",
       isComponent: false,
       componentOptions: [
-        { key: 'clenaTimer', componentName:'clean', name: 'Clean Timer'}
+        { key: 'clenaTimer', componentName:'modules/smartMRK/timers/clean', name: 'Clean Timer'}
       ]
     }
   },
