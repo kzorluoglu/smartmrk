@@ -35,6 +35,15 @@
         </div>
         <div class="row">
           <div class="col">
+            <label for="component" class="form-label">Modul</label>
+            <select id="component" v-model="component">
+              <option value="">Custom Widget</option>
+              <option v-for="option in componentOptions" v-bind:key="option.key" :value="option.componentName">{{ option.name }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" v-if="isComponent === false">
+          <div class="col">
             <textarea ref="rawBody" class="form-control" v-model="rawBody" placeholder="Write your Text or HTML Code"></textarea><br>
           </div>
         </div>
@@ -65,11 +74,23 @@ export default {
       max: 12,
       min: 1,
       widget: null,
-      rowStart: 0,
-      rowEnd: 0,
-      columnStart: 0,
-      columnEnd: 0,
-      rawBody: ""
+      rowStart: 1,
+      rowEnd: 1,
+      columnStart: 1,
+      columnEnd: 1,
+      rawBody: "",
+      component: "",
+      isComponent: false,
+      componentOptions: [
+        { key: 'clenaTimer', componentName:'clean', name: 'Clean Timer'}
+      ]
+    }
+  },
+  updated() {
+    if(this.component === '') {
+      this.isComponent = false
+    }else {
+      this.isComponent = true
     }
   },
   beforeMount() {
@@ -79,6 +100,7 @@ export default {
         "columnStart": this.columnStart,
         "columnEnd": this.columnEnd,
         "body": this.rawBody,
+        "component": this.component,
         "isEditing": false,
         "genereatedStyle": `
               grid-row-start:${this.rowStart};
@@ -91,7 +113,7 @@ export default {
   methods: {
     createWidget() {
 
-      if (this.rawBody === '') {
+      if (this.component === '' && this.rawBody === '') {
         return;
       }
 
@@ -101,6 +123,7 @@ export default {
         "columnStart": this.columnStart,
         "columnEnd": this.columnEnd,
         "body": this.rawBody,
+        "component": this.component,
         "isEditing": false,
         "genereatedStyle": `
               grid-row-start:${this.rowStart};
@@ -118,8 +141,8 @@ export default {
     }
   },
   beforeDestroy() {
-    if (this.widget.body === "") {
-      this.deleteWidget();
+    if (this.widget.component === '' && this.widget.rawBody === '') {
+        this.deleteWidget();
     }
   }
 }
@@ -128,7 +151,7 @@ export default {
 <style scoped>
 .editWidget {
   width: 75%;
-  height: 75%;
+  height: auto;
   margin: auto;
   position: absolute;
   top: 0;

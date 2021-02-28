@@ -4,7 +4,7 @@
             :key="widget.id"
             v-bind:widget="widget"
             v-bind:style="widget.genereatedStyle"
-            v-bind:class="{gridShowable : isAdmin}"/>
+            v-bind:class="{visible : isAdmin}"/>
   </div>
 </template>
 
@@ -18,14 +18,15 @@ export default {
   data() {
     return {
       widgets: [],
-      isAdmin: Vue.prototype.$isAdmin
+      isAdmin: false
     }
-  },
-  mounted() {
-    console.log("test")
   },
   beforeMount() {
     this.widgets = database.get('widgets').value()
+    this.isAdmin = Vue.prototype.$isAdmin
+    console.log(Vue.prototype.$isAdmin)
+  },
+  updated() {
   }
 }
 </script>
@@ -39,7 +40,7 @@ export default {
   grid-column-gap: 1rem;
   height: 100vh;
 }
-.girdItemVisible {
+.visible {
   border:1px #f1c40f solid;
 }
 
@@ -98,5 +99,18 @@ export default {
 }
 .fourth:hover {
   background-position: 0;
+}
+
+.widgetForm {
+  width: 75%;
+  height: auto;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0.99;
+  color: #000;
 }
 </style>

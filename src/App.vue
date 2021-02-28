@@ -27,7 +27,6 @@ export default {
 
       if (e.key === "y" && (e.ctrlKey || e.metaKey)) {
         Vue.prototype.$isAdmin = true;
-        console.log("isAdmin " + Vue.prototype.$isAdmin)
       }
 
     });
